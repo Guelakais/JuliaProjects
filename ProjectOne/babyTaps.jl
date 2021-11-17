@@ -1,5 +1,5 @@
 #!/usr/bin/env julia
-import XLSX #import to read xlsx Files that are used in Excel or other Spreadsheet programgs
+import XLSX ,DataFrames, CSV
 
 function main() #main function to initialise Workflows
     print("OK, today, we're trying to open a xls in Julia and look what it does with it, ok? y/n: ") #this tool is terminal based
@@ -26,8 +26,13 @@ function fileWorker()
             direkt = cd(pathstr)
             print("Please insert Filename: ")
             file = readline()
+            sfile = string(file)
             xf = XLSX.readxlsx(file)
-
+            for v in XLSX.sheetnames(xf)
+                sh = xf[v]
+                rt = XLSX.readtable(sfile, v)
+                #CSV.write(string(sfile,v,".csv" ),df)
+            end
             break
         else
             print("try it again")
